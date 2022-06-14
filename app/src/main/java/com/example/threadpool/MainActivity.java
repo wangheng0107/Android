@@ -22,13 +22,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        maopao();
+        // 算法
+        suanfa();
+        // Android
+    }
+
+    public void suanfa() {
+//        maopao();
 //        xuanze();
-//        deleteRePeatNum();
+        deleteRePeatNum();
 //        xuanzhuan();
 //        containsDuplicate();
 //        containsDuplicate();
 //        intersect();
+        // 数组
+        // 链表
+        // 贪心算法
+        // 动态规划
+        // 双指针
     }
 
     //算法1——冒泡排序
@@ -68,18 +79,18 @@ public class MainActivity extends AppCompatActivity {
 
     //算法3_删除数组中重复元素，先排序
     public void deleteRePeatNum() {//思路没找到
-        int nums[] = {1, 3, 4, 9, 3, 8, 5, 3};
-        for (int i = 0; i < nums.length - 1; i++) {
-            for (int j = i; j < nums.length - 1; j++) {
-                if (nums[i] > nums[j + 1]) {
-                    int temp = nums[i];
-                    nums[i] = nums[j + 1];
-                    nums[j + 1] = temp;
-                }
-            }
-        }
+        int nums[] = {0, 0, 1, 1, 1, 2, 2, 3, 3, 4};
+//        for (int i = 0; i < nums.length - 1; i++) {
+//            for (int j = i; j < nums.length - 1; j++) {
+//                if (nums[i] > nums[j + 1]) {
+//                    int temp = nums[i];
+//                    nums[i] = nums[j + 1];
+//                    nums[j + 1] = temp;
+//                }
+//            }
+//        }
 
-        //双指针方式解决
+        //双指针方式解决1
         int i = 0;
         for (int j = 1; j < nums.length; j++) {
             if (nums[i] != nums[j]) {
@@ -91,6 +102,18 @@ public class MainActivity extends AppCompatActivity {
         for (int n = 0; n < i + 1; n++) {
             Log.e(TAG, "输出元素：" + nums[n]);
         }
+//        // 双指针2
+//        int count = 0;
+//        for (int i = 0; i < nums.length - 1; i++) {
+//            if (nums[i] != nums[i + 1]) {
+//                count++;
+//                nums[count] = nums[i + 1];
+//            }
+//        }
+//        Log.e(TAG, "总数是：" + (count + 1));
+//        for (int n = 0; n < count + 1; n++) {
+//            Log.e(TAG, "输出元素：" + nums[n]);
+//        }
 
 //        int i = 0;
 //        for (int j = 1; j <nums.length ; j++) {
@@ -104,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
     }
 
-    //算法4_买卖股票
+    //算法4_买卖股票，最优解问题，用贪心算法：局部考虑最优，最终达到整体的最优
     public int buyPrice(int[] prices) {//9分15
         int result = 0;
         for (int i = 0; i < prices.length - 1; i++) {
@@ -167,6 +190,8 @@ public class MainActivity extends AppCompatActivity {
 ////        List list = new ArrayList(set);
 ////        list.get(0);
 //        return set.iterator().next();
+
+        // 位运算符，转成二进制，高位开始比较，相同为0，不同为1；
         int result = 0;
         for (int num : nums) {
             result ^= num;
@@ -174,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    //两数组的交集，双指针
+    //算法8: 两数组的交集intersect，双指针
     public int[] intersect() {
         int[] nums1 = {4, 1, 2, 1, 2};
         int[] nums2 = {0, 1, 1, 2, 7, 9};
@@ -204,17 +229,33 @@ public class MainActivity extends AppCompatActivity {
         return Arrays.copyOf(intersect, index);
     }
 
-    //移动0
+    //算法9: 移动零
     public void moveZeroes() {
         int[] nums = {4, 1, 2, 0, 2};
-        for (int i = 0;i<nums.length-1;i++){
-            for (int j=0;j<nums.length-1-i;j++){
-                if (nums[j]==0){
-                    int temp = nums[j+1];
-                    nums[j+1] = nums[j];
-                    nums[j] = temp;
-                }
+        // 双指针，o(n)
+        int index = 0;
+        int right = 0;
+        while (right < nums.length) {
+            if (nums[right] == 0) {
+                right++;
+                continue;
             }
+            nums[index] = nums[right];
+            index++;
+            right++;
         }
+        for (int i = index; i < nums.length; i++) {
+            nums[i] = 0;
+        }
+        // 冒泡排序： o(n^2)耗时
+//        for (int i = 0; i < nums.length - 1; i++) {
+//            for (int j = 0; j < nums.length - 1 - i; j++) {
+//                if (nums[j] == 0) {
+//                    int temp = nums[j + 1];
+//                    nums[j + 1] = nums[j];
+//                    nums[j] = temp;
+//                }
+//            }
+//        }
     }
 }
