@@ -22,26 +22,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // 算法
-        suanfa();
-        // Android
+        // 排序算法
+        paixu();
+        // 牛客top101
+        top101();
+        // 剑指offer
+        offer();
     }
-
-    public void suanfa() {
+    public void paixu() {
 //        maopao();
 //        xuanze();
-        deleteRePeatNum();
-//        xuanzhuan();
-//        containsDuplicate();
-//        containsDuplicate();
-//        intersect();
-        // 数组
-        // 链表
-        // 贪心算法
-        // 动态规划
-        // 双指针
     }
 
+    // 各类排序算法
     //算法1——冒泡排序
     public void maopao() {// 9分54秒
         int nums[] = {1, 3, 4, 9, 8, 5, 3};
@@ -77,7 +70,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //算法3_删除数组中重复元素，先排序
+    // 算法4：插入排序（打扑克类似）
+
+    // 算法3：快速排序，平均时间复杂度为O(nlogn)，空间复杂度为O(logn)
+
+    // 算法5：二分查找
+
+    // 牛客top101
+    public void top101() {
+//        deleteRePeatNum();
+//        xuanzhuan();
+//        containsDuplicate();
+//        containsDuplicate();
+//        intersect();
+        replaceSpace();
+    }
+
+    // 牛客top101 https://www.nowcoder.com/exam/oj?fromPut=ad_baidu_sem_tiku_oj&bd_vid=11420667720602341616
+    //算法1_删除数组中重复元素，先排序
     public void deleteRePeatNum() {//思路没找到
         int nums[] = {0, 0, 1, 1, 1, 2, 2, 3, 3, 4};
 //        for (int i = 0; i < nums.length - 1; i++) {
@@ -127,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
     }
 
-    //算法4_买卖股票，最优解问题，用贪心算法：局部考虑最优，最终达到整体的最优
+    //算法2_买卖股票，最优解问题，用贪心算法：局部考虑最优，最终达到整体的最优
     public int buyPrice(int[] prices) {//9分15
         int result = 0;
         for (int i = 0; i < prices.length - 1; i++) {
@@ -139,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    //算法5_旋转数组
+    //算法3_旋转数组
     public void xuanzhuan(int[] nums) {//20分55
         int[] nums1 = Arrays.copyOf(nums, nums.length);
         int k = 3;
@@ -152,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //算法6_存在重复元素
+    //算法4_存在重复元素
     public boolean containsDuplicate() {// 5分钟，时间复杂度O(nlogn),空间复杂度O(1)
         int nums[] = {1, 3, 4, 9, 8, 5, 2, 2};
 //        Arrays.sort(nums);
@@ -175,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    //算法7_只出现一次的数字
+    //算法5_只出现一次的数字
     public int singleNumber() {
         int nums[] = {4, 1, 2, 1, 2};
 //        Set<Integer> set = new HashSet<>();
@@ -199,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    //算法8: 两数组的交集intersect，双指针
+    //算法6: 两数组的交集intersect，双指针
     public int[] intersect() {
         int[] nums1 = {4, 1, 2, 1, 2};
         int[] nums2 = {0, 1, 1, 2, 7, 9};
@@ -229,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
         return Arrays.copyOf(intersect, index);
     }
 
-    //算法9: 移动零
+    //算法7: 移动零
     public void moveZeroes() {
         int[] nums = {4, 1, 2, 0, 2};
         // 双指针，o(n)
@@ -258,4 +268,46 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        }
     }
+
+    // 剑指offer
+    public void offer() {
+
+    }
+
+    // 剑指offer  https://leetcode-cn.com/problem-list/xb9nqhhg/
+    // 算法1：数组中的任意重复数字
+    public int duplicate(int[] numbers) {
+        Set<Integer> set = new HashSet<Integer>();
+        for (int i = 0; i < numbers.length; i++) {
+            if (set.contains(numbers[i])) {
+                return numbers[i];
+            } else {
+                set.add(numbers[i]);
+            }
+        }
+        return -1;
+    }
+
+    // 算法2: 替换空格
+    public String replaceSpace() {
+        String s = "We Are Happy";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i)==' '){
+                sb.append("%20");
+            }else {
+                sb.append(s.charAt(i));
+            }
+        }
+        Log.e(TAG, "替换空格: " + sb.toString());
+        return sb.toString();
+    }
+
+    // 算法3：最小的k个数 sort的时间复杂度O(nlogn)
+    public int[] getLeastNumbers(int[] arr, int k) {
+        Arrays.sort(arr);
+        return   Arrays.copyOf(arr,k);
+    }
+
+
 }
