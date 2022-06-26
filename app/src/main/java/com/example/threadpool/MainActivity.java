@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         // 剑指offer
         offer();
     }
+
     public void paixu() {
 //        maopao();
 //        xuanze();
@@ -70,11 +71,97 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // 算法4：插入排序（打扑克类似）
+    // 算法3：插入排序（打扑克类似）还有优化插入排序，如二分插入排序，链表插入排序，希尔排序
+    // 原理：每次将数组最后一个元素作为插入元素，与它前面有序（已排好序）的数组元素进行比较后，插入正确的位置，排序完成。
+    private static int[] insertionSort(int[] arr) {
+        for (int i = 1; i < arr.length; i++) {// i: 代表即将插入的元素角标,作为每一组比较数据的最后一个元素
+            for (int j = i; j > 0; j--) {   //j:代表数组角标
+                if (arr[j] < arr[j - 1]) {//符合条件，插入元素（交换位置）
+                    int temp = arr[j];
+                    arr[j] = arr[j - 1];
+                    arr[j - 1] = temp;
+                }
+            }
+        }
+        return arr;
+    }
 
-    // 算法3：快速排序，平均时间复杂度为O(nlogn)，空间复杂度为O(logn)
+    // 算法4：快速排序，平均时间复杂度为O(nlogn)，空间复杂度为O(logn)
+    // 递归算法，有点复杂
+    // 算法思想：左侧初始值为基准元素，分别找出右侧小的值和左侧大的值进行交换，直到找到剩一个值和基准元素交换，然后分别递归下去，直到排序完成
+    // https://blog.csdn.net/wthfeng/article/details/78037228
+    public void quickSort(int[] arr, int low, int high) {
+        // low,high 为每次处理数组时的首、尾元素索引
 
-    // 算法5：二分查找
+        //当low==high是表示该序列只有一个元素，不必排序了
+        if (low >= high) {
+            return;
+        }
+        // 选出哨兵元素和基准元素。这里左边的哨兵元素也是基准元素
+        int i = low, j = high, base = arr[low];
+        while (i < j) {
+            //右边哨兵从后向前找
+            while (arr[j] >= base && i < j) {
+                j--;
+            }
+            //左边哨兵从前向后找
+            while (arr[i] <= base && i < j) {
+                i++;
+            }
+            swap(arr,i,j);  //交换元素
+        }
+        swap(arr,low,j);  //基准元素与右哨兵交换
+
+        //递归调用，排序左子集合和右子集合
+        quickSort(arr,low,j-1);
+        quickSort(arr,j+1,high);
+
+    }
+
+    private void swap(int[] arr, int i, int j) {
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+
+    // 算法5_1：二分查找法 (前提是有序) 非递归
+    public static int binarySearchNoRecur(int[] arr, int findVal) {
+
+        int left = 0;
+        int right = arr.length;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (arr[mid] == findVal) {
+                return mid;
+            } else if (arr[mid] > findVal) {
+                // 向左边查找
+                right = mid - 1;
+            } else {
+                // 向右边查找
+                left = mid + 1;
+            }
+        }
+        return -1;
+    }
+
+    // // 算法5_2：二分查找法 (前提是有序) 递归方法
+    public static int binarySearch(int[] arr, int left, int right, int findVal) {
+
+        if (left > right) {
+            return -1;
+        }
+        int mid = (left + right) / 2;
+
+        if (arr[mid] == findVal) {
+            return mid;
+        } else if (arr[mid] > findVal) {
+            // 向左边查找
+            return binarySearch(arr, left, mid - 1, findVal);
+        } else {
+            // 向右边查找
+            return binarySearch(arr, mid + 1, right, findVal);
+        }
+    }
 
     // 牛客top101
     public void top101() {
@@ -293,9 +380,9 @@ public class MainActivity extends AppCompatActivity {
         String s = "We Are Happy";
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i)==' '){
+            if (s.charAt(i) == ' ') {
                 sb.append("%20");
-            }else {
+            } else {
                 sb.append(s.charAt(i));
             }
         }
@@ -306,8 +393,7 @@ public class MainActivity extends AppCompatActivity {
     // 算法3：最小的k个数 sort的时间复杂度O(nlogn)
     public int[] getLeastNumbers(int[] arr, int k) {
         Arrays.sort(arr);
-        return   Arrays.copyOf(arr,k);
+        return Arrays.copyOf(arr, k);
     }
-
 
 }
