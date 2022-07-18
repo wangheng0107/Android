@@ -3,6 +3,8 @@ package com.example.threadpool;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import java.lang.reflect.Array;
@@ -11,6 +13,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 
 /**
  * 研究线程池，使用场景和使用方式
@@ -108,13 +111,13 @@ public class MainActivity extends AppCompatActivity {
             while (arr[i] <= base && i < j) {
                 i++;
             }
-            swap(arr,i,j);  //交换元素
+            swap(arr, i, j);  //交换元素
         }
-        swap(arr,low,j);  //基准元素与右哨兵交换
+        swap(arr, low, j);  //基准元素与右哨兵交换
 
         //递归调用，排序左子集合和右子集合
-        quickSort(arr,low,j-1);
-        quickSort(arr,j+1,high);
+        quickSort(arr, low, j - 1);
+        quickSort(arr, j + 1, high);
 
     }
 
@@ -392,8 +395,190 @@ public class MainActivity extends AppCompatActivity {
 
     // 算法3：最小的k个数 sort的时间复杂度O(nlogn)
     public int[] getLeastNumbers(int[] arr, int k) {
+        Handler handler = new Handler();
+        Message message = Message.obtain();
+        message.what = 1;
+        handler.sendMessage(message);
         Arrays.sort(arr);
         return Arrays.copyOf(arr, k);
+    }
+
+    // 链表
+    /**
+     * 给定一个单链表的头结点pHead(该头节点是有值的，比如在下图，它的val是1)，长度为n，
+     * 反转该链表后，返回新链表的表头。
+     */
+    public class ListNode {
+        int val;
+        ListNode next = null;
+
+        ListNode(int val) {
+            this.val = val;
+        }
+    }
+    public ListNode ReverseList(ListNode head) {
+        ListNode newHead = null;
+        ListNode cur = head;
+        while(cur != null){
+            ListNode temp = cur.next;
+            cur.next = newHead;
+            newHead = cur;
+            cur = temp;
+        }
+        return newHead;
+    }
+
+    /**
+     * 输入一个链表的头节点，按链表从尾到头的顺序返回每个节点的值（用数组返回）。
+     * 如输入{1,2,3}
+     * 返回一个数组为[3,2,1]
+     */
+    public ArrayList<Integer> printListFromTailToHead(ListNode listNode) {
+        ListNode newhead = null;
+        ListNode cur = listNode;
+        while(cur != null){
+            ListNode temp = cur.next;
+            cur.next = newhead;
+            newhead = cur;
+            cur = temp;
+        }
+        ArrayList<Integer> list = new ArrayList();
+        while(newhead != null){
+            list.add(newhead.val);
+            newhead = newhead.next;
+        }
+        return list;
+    }
+    // 使用栈的方式，同时返回int数组
+    public int[] reversePrint(ListNode head) {
+        Stack<Integer> stack=new Stack<>();
+        while(head != null){
+            stack.push(head.val);
+            head=head.next;
+        }
+        int[] num = new int[stack.size()];
+        int k = 0;
+        while(!stack.isEmpty()){
+            num[k] = stack.pop();
+            k++;
+        }
+        return num;
+    }
+
+    /**
+     * 输入两个递增的链表，单个链表的长度为n，合并这两个链表并使新链表中的节点仍然是递增排序的。
+     * 注：返回整个链表的时候，需要用到辅助头结点
+     * 输入：{1,3,5},{2,4,6}
+     * 返回值：{1,2,3,4,5,6}
+     */
+    public ListNode Merge(ListNode list1,ListNode list2) {
+        if(list1 == null){
+            return list2;
+        }
+        if(list2 == null){
+            return list1;
+        }
+        ListNode head = new ListNode(0);
+        ListNode cur = head;
+        while(list1!=null&&list2!=null){
+            if(list1.val<=list2.val){
+                // 插入小的
+                cur.next = list1;
+                // 当前插完向后移动
+                list1 = list1.next;
+            }else{
+                cur.next = list2;
+                list2 = list2.next;
+            }
+            cur = cur.next;
+        }
+        if(list1!=null){
+            cur.next = list1;
+        }
+        if(list2!=null){
+            cur.next = list2;
+        }
+        return head.next;
+    }
+
+    /**
+     * 给你一个链表的头节点 head ，判断链表中是否有环。
+     * @param head
+     * @return
+     */
+    public boolean hasCycle(ListNode head) {
+        // 快慢指针
+        ListNode slow = head;
+        ListNode fast = head;
+        // fast走的快
+        while(fast!=null&&fast.next!=null){
+            fast = fast.next.next;
+            slow = slow.next;
+            if(fast==slow){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 给定一个链表的头节点  head ，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
+     */
+    // 快慢指针
+    public ListNode detectCycle1(ListNode head) {
+        // 快慢指针
+        ListNode slow = head;
+        ListNode fast = head;
+        // fast走的快
+        while(fast!=null&&fast.next!=null){
+            fast = fast.next.next;
+            slow = slow.next;
+            if(fast==slow){
+                fast = head;
+                while (fast!=slow){
+                    fast = fast.next;
+                    slow = slow.next;
+                }
+                return slow;
+            }
+        }
+        return null;
+    }
+    // set集合
+    public ListNode detectCycle2(ListNode head) {
+        ListNode node = head;
+        Set<ListNode> set = new HashSet<ListNode>();
+        while (node != null) {
+            if (set.contains(node)) {
+                return node;
+            } else {
+                set.add(node);
+            }
+            node = node.next;
+        }
+        return null;
+    }
+
+    /**
+     * 输入两个无环的单向链表，找出它们的第一个公共结点，如果没有公共节点则返回空。
+     * 使用的set方式
+     */
+    public ListNode FindFirstCommonNode(ListNode pHead1, ListNode pHead2) {
+        Set<ListNode> set = new HashSet<>();
+        ListNode head = pHead1;
+        while(head!=null){
+            set.add(head);
+            head = head.next;
+        }
+        ListNode head2 = pHead2;
+        while(head2!=null){
+            if(set.contains(head2)){
+                return head2;
+            }else{
+                head2 = head2.next;
+            }
+        }
+        return null;
     }
 
 }
