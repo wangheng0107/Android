@@ -581,4 +581,82 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
+    /**
+     * 输入一个长度为 n 的链表，设链表中的元素的值为 ai ，返回该链表中倒数第k个节点。
+     *
+     *
+     * @param pHead ListNode类
+     * @param k int整型
+     * @return ListNode类
+     */
+    public ListNode FindKthToTail (ListNode pHead, int k) {
+        ListNode p1 = pHead;
+        // 保留p1，并计算k是否超过链表长度
+        while(p1 != null && k > 0) {
+            p1 = p1.next;
+            k--;
+        }
+        if(k > 0) {
+            return null;
+        }
+        ListNode p2 = pHead;
+        while(p1 != null) {
+            p1 = p1.next;
+            p2 = p2.next;
+        }
+        return p2;
+    }
+
+    /**
+     * 给定单向链表的头指针和一个要删除的节点的值，定义一个函数删除该节点。返回删除后的链表的头节点。
+     * 输入：{2,5,1,9},5
+     * 返回值：{2,1,9}
+     */
+    public ListNode deleteNode (ListNode head, int val) {
+        ListNode res = new ListNode(0);
+        res.next = head;
+        ListNode pre = res;
+        ListNode cur = head;
+        while(cur!=null){
+            if(cur.val == val){
+                pre.next = cur.next;
+                break;
+            }
+            pre = cur;
+            cur = cur.next;
+        }
+        return res.next;
+    }
+
+    /**
+     * 在一个排序的链表中，存在重复的结点，请删除该链表中重复的结点，重复的结点不保留，返回链表头指针。
+     * 例如，链表 1->2->3->3->4->4->5  处理后为 1->2->5
+     * @param pHead
+     * @return
+     */
+    public ListNode deleteDuplication(ListNode pHead) {
+        //空链表
+        if(pHead == null)
+            return null;
+        ListNode res = new ListNode(0);
+        //在链表前加一个表头
+        res.next = pHead;
+        ListNode cur = res;
+        while(cur.next != null && cur.next.next != null){
+            //遇到相邻两个节点值相同
+            if(cur.next.val == cur.next.next.val){
+                int temp = cur.next.val;
+                //将所有相同的都跳过
+                while (cur.next != null && cur.next.val == temp)
+                    cur.next = cur.next.next;
+            }
+            else
+                cur = cur.next;
+        }
+        //返回时去掉表头
+        return res.next;
+    }
+
+
+
 }
